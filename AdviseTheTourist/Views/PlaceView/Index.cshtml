@@ -1,0 +1,371 @@
+﻿@model AdviseTheTourist.Models.PlaceViewModel
+
+@{
+    ViewData["Title"] = Model?.Place?.Name ?? "View";
+    var isLogin = User.HasClaim(c => c.Type == "Email");
+    var placeName = Model.Place.Name;
+    var newComment = new Comment { PlaceName = placeName };
+    var newHashtag = new Hashtag { PlaceName = placeName };
+    var newQuestion = new Question { PlaceName = placeName };
+    var newRatingCriteris = new RatingCriteria { PlaceName = placeName };
+    string Active(int i) => i == 0 ? "active" : "";
+}
+
+@{
+    await Html.RenderPartialAsync("_HeaderPartial", new List<string> { "_UserControlPartial" });
+}
+<div class="container">
+    @if(Model.Photos.Any())
+    {
+        <div id="photos">
+            <div id="myCarousel" class="carousel slide" data-ride="carousel">
+                <ol class="carousel-indicators">
+                    @for (var i = 0; i < Model.Photos.Count; i++)
+                    {
+                        <li data-target="#myCarousel" data-slide-to="@i" class="@Active(i)"></li>
+                    }
+                </ol>
+
+                <!-- Wrapper for slides -->
+                <div class="carousel-inner">
+                    @for (var i = 0; i < Model.Photos.Count; i++)
+                    {
+                        <div class="item @Active(i)">
+                            <img src="@Url.Content(Model.Photos[i].Photo)" alt="@Model.Photos[i].PlaceName">
+                        </div>
+                    }
+                </div>
+
+                <!-- Left and right controls -->
+                <a class="left carousel-control" href="#myCarousel" data-slide="prev">
+                    <span class="glyphicon glyphicon-chevron-left"></span>
+                    <span class="sr-only">Previous</span>
+                </a>
+                <a class="right carousel-control" href="#myCarousel" data-slide="next">
+                    <span class="glyphicon glyphicon-chevron-right"></span>
+                    <span class="sr-only">Next</span>
+                </a>
+            </div>
+        </div>
+    }
+    <div id="data" class="mt-4">
+        <div id="main-data" class="d-flex justify-content-between">
+            <div>
+                <dl class="row">
+                    <dt class="col-md-4">
+                        @Html.DisplayNameFor(model => model.Place.Name)
+                    </dt>
+                    <dd class="col-md-8">
+                        @Html.DisplayFor(model => model.Place.Name)
+                    </dd>
+                     <dt class="col-md-4">
+                        @Html.DisplayNameFor(model => model.Place.Buildingdate)
+                    </dt>
+                    <dd class="col-md-8">
+                        @Html.DisplayFor(model => model.Place.Buildingdate)
+                    </dd>
+                    <dt class="col-md-4">
+                        Map Location
+                    </dt>
+                    <dd class="col-md-8">
+                        @Model.Place.MapLongitude  ,  @Model.Place.MapLatitude
+                    </dd>
+
+                    @if (Model?.City != null)
+                    {
+                        <dt class="col-md-4">
+                            @Html.DisplayNameFor(model => model.City.Location)
+                        </dt>
+                        <dd class="col-md-8">
+                            @Html.DisplayFor(model => model.City.Location)
+                        </dd>
+                        <dt class="col-md-4">
+                            @Html.DisplayNameFor(model => model.City.Coastal)
+                        </dt>
+                        <dd class="col-md-8">
+                            @Html.DisplayFor(model => model.City.Coastal)
+                        </dd>
+                    }
+
+                    @if (Model?.Museum != null)
+                    {
+                        <dt class="col-md-4">
+                            @Html.DisplayNameFor(model => model.Museum.OpenTime)
+                        </dt>
+                        <dd class="col-md-8">
+                            @Html.DisplayFor(model => model.Museum.OpenTime)
+                        </dd>
+                        <dt class="col-md-4">
+                            @Html.DisplayNameFor(model => model.Museum.CloseTime)
+                        </dt>
+                        <dd class="col-md-8">
+                            @Html.DisplayFor(model => model.Museum.CloseTime)
+                        </dd>
+                    }
+
+                    @if (Model?.Restaurant != null)
+                    {
+                        <dt class="col-md-4">
+                            @Html.DisplayNameFor(model => model.Restaurant.Cuisine)
+                        </dt>
+                        <dd class="col-md-8">
+                            @Html.DisplayFor(model => model.Restaurant.Cuisine)
+                        </dd>
+                        <dt class="col-md-4">
+                            @Html.DisplayNameFor(model => model.Restaurant.Style)
+                        </dt>
+                        <dd class="col-md-8">
+                            @Html.DisplayFor(model => model.Restaurant.Style)
+                        </dd>
+                    }
+                    <dt class="col-md-4">
+                        @Html.DisplayNameFor(model => model.VisitsNo)
+                    </dt>
+                    <dd class="col-md-8">
+                        @Html.DisplayFor(model => model.VisitsNo) (@Model.LikesNo <i class="glyphicon glyphicon-heart text-primary"></i>)
+                    </dd>
+                    @if(isLogin)
+                    {
+                        <dt class="col-md-4">
+                        </dt>
+                        <dd class="col-md-8">
+                            @if(Model.Visit == null)
+                            {
+                                <a asp-action="ConfirmVisit" asp-route-id="@Model.Place.Name">Confirm Visit</a>
+                            }
+                            else if(!Model.Visit.Liked)
+                            {
+                                <a asp-action="ConfirmLike" asp-route-id="@Model.Place.Name">Confirm Like</a>
+                            }
+                        </dd>
+                    }
+                </dl>
+            </div>
+            <div>
+                <img src="@Url.Content(Model.Place.Image)" width="200" height="200" />
+            </div>
+        </div>
+        @if(Model.HotelFacilities != null)
+        {
+            <div id="hotel-fac">
+                <hr />
+                <h4>Hotel Facilities</h4>
+                <div>
+                    @foreach (var facility in Model.HotelFacilities)
+                    {
+                        <div>
+                            <div><p>@facility.Name</p></div>
+                        </div>
+                        <div>
+                            @facility.Description
+                        </div>
+                    }
+                </div>
+            </div>
+        }
+        @if(Model.HotelRooms != null)
+        {
+            <div id="hotel-rooms">
+                <hr />
+                <h4>Hotel Rooms</h4>
+                <table>
+                    @foreach (var room in Model.HotelRooms)
+                    {
+                        <tr>
+                            <td>@room.Type</td>
+                            <td>@room.Price</td>
+                        </tr>
+                    }
+                </table>
+            </div>
+        }
+        @if(Model.MuseumMonuments != null)
+        {
+            <div id="museum-mon">
+                <hr />
+                <h4>Museum Monuments</h4>
+                <div>
+                    @foreach (var monument in Model.MuseumMonuments)
+                    {
+                        <div>
+                            <p>@monument.Name</p>
+                            <div>@monument.Description</div>
+                        </div>
+                    }
+                </div>
+            </div>
+        }
+        @if(Model.MuseumTickets != null)
+        {
+            <div id="museum-tickets">
+                <hr />
+                <h4>Museum Tickets</h4>
+                <table>
+                    @foreach (var ticket in Model.MuseumTickets)
+                    {
+                        <tr>
+                            <td>@ticket.Type</td>
+                            <td>@ticket.Price</td>
+                        </tr>
+                    }
+                </table>
+            </div>
+        }
+    </div>
+    <div id="comments">
+        <hr />
+        <h4>Comments</h4>
+        <div>
+            @foreach (var comment in Model.Comments)
+            {
+                <div>
+                    <p>@comment.Content</p>
+                </div>
+            }
+        </div>
+        @if (isLogin)
+        {
+            <div class="mt-4">
+                <form asp-action="AddComment">
+                    <input type="hidden" asp-for="@newComment.PlaceName" name="PlaceName" />
+                    <div class="form-group w-100">
+                        <input asp-for="@newComment.Content" name="Content" class="form-control w-100" />
+                    </div>
+                    <input type="submit" value="Add Comment" class="btn btn-outline-primary" />
+                </form>
+            </div>
+        }
+    </div>
+    <div id="hashtags">
+        <hr />
+        <h4>Hashtags</h4>
+        <div>
+            @foreach (var hashtag in Model.Hashtags)
+            {
+                <div>
+                    <p>@hashtag.Content</p>
+                </div>
+            }
+        </div>
+        @if (isLogin)
+        {
+            <div class="mt-4">
+                <form asp-action="AddHashtag">
+                    <input type="hidden" asp-for="@newHashtag.PlaceName" name="PlaceName" />
+                    <div class="form-group w-100">
+                        <input asp-for="@newHashtag.Content" name="Content" class="form-control w-100" />
+                    </div>
+                    <input type="submit" value="Add Hashtag" class="btn btn-outline-primary" />
+                </form>
+            </div>
+        }
+    </div>
+    <div id="questions">
+        <hr />
+        <h4>Questions</h4>
+        <div>
+            @foreach (var question in Model.Questions)
+            {
+                <div>
+                    <p>@question.Content</p>
+                    <div><p>@question.Answer</p></div>
+                </div>
+            }
+        </div>
+        @if (isLogin)
+        {
+            <div class="mt-4">
+                <form asp-action="AddQuestion">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    <div class="form-group w-100">
+                        <input asp-for="@newQuestion.Content" name="Content" class="form-control w-100" />
+                        <span asp-validation-for="@newQuestion.Content" class="text-danger"></span>
+                    </div>
+                    <input type="hidden" asp-for="@newQuestion.PlaceName" name="PlaceName" />
+                    <div class="form-group">
+                        <input type="submit" value="Add Question" class="btn btn-outline-primary" />
+                    </div>
+                </form>
+            </div>
+        }
+    </div>
+    <div id="rationg">
+        <hr />
+        <h4>Rating Criterias</h4>
+        <table class="table">
+            @for (var i = 0; i < Model.RatingModels.Count; i++)
+            {
+                <tr>
+                    <td>
+                        @Model.RatingModels[i].CriteriaName
+                        &nbsp;&nbsp;&nbsp;
+                        <a asp-action="RatingOf" asp-controller="Explore" 
+                            asp-route-id="@Model.RatingModels[i].CriteriaName"
+                            asp-route-type="@Model.Place.Type">
+                            <i class="glyphicon glyphicon-new-window"></i>
+                        </a>
+                    </td>
+                    <td>
+                        <div class="d-flex justify-content-around">
+                            @for (int j = 1; j <= Model.RatingModels[i].Value; j++)
+                            {
+                                <i class="glyphicon glyphicon-star star"></i>
+                            }
+                        </div>
+                    </td>
+                </tr>
+                @if (isLogin && Model.Visit != null && Model.RatingModels[i].Active)
+                {
+                    <tr>
+                        <td>
+                            <div>
+                                <div id="rc-@i" class="d-flex justify-content-around">
+                                    @for (int j = 1; j <= 10; j++)
+                                    {
+                                        <i class="glyphicon glyphicon-star" style="color:gray" onclick="setStars(@i, @j)"></i>
+                                    }
+                                </div>
+                                <div class="d-flex justify-content-between mt-3">
+                                    <form asp-action="PostRating">
+                                        <input type="hidden" value="@placeName" name="PlaceName" />
+                                        <input type="hidden" value="@Model.RatingModels[i].CriteriaName" name="CriteriaName" />
+                                        <input type="hidden" id="rc-@i-input" name="Value"/>
+                                        <button type="submit" class="btn btn-outline-primary">Post Rating</button>
+                                    </form>
+                                    <button class="btn btn-outline-primary" onclick="clearStars(@i)">clear</button>
+                                </div>
+                            </div>
+                        </td>
+                        <td></td>
+                    </tr>
+                }
+            }
+        </table>
+        @if (isLogin)
+        {
+            <div class="mt-4">
+                <form asp-action="AddRatingCriteria">
+                    <input type="hidden" asp-for="@newRatingCriteris.PlaceName" name="PlaceName" />
+                    <div class="form-group w-100">
+                        <input asp-for="@newRatingCriteris.Name" name="Name" class="form-control w-100" />
+                    </div>
+                    <input type="submit" value="Add Rating Criteria" class="btn btn-outline-primary" />
+                </form>
+           </div>
+        }
+    </div>
+</div>
+
+<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+<script type="text/javascript">
+    function setStars(i, j) {
+        $(`#rc-${i} i:nth-child(-n + ${j})`).css("color", p => "gold");
+        $(`#rc-${i} i:nth-child(n + ${j + 1})`).css("color", p => "gray");
+        document.getElementById(`rc-${i}-input`).value = j;
+    }
+
+    function clearStars(i) {
+        $(`#rc-${i} i`).css("color", p => "gray");
+        document.getElementById(`rc-${i}-input`).value = 0;
+    }
+</script>

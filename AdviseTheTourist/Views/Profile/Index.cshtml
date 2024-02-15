@@ -1,0 +1,212 @@
+﻿@model AdviseTheTourist.Models.ProfileModel
+
+@{
+    ViewData["Title"] = "Index";
+    var newAdress = new MemberAddress();
+    var newPhoneNo = new MemberPhoneNo();
+}
+@{
+    await Html.RenderPartialAsync("_HeaderPartial", new List<string> { "_UserControlPartial" });
+}
+
+<div class ="d-flex flex-column g-2 container  font-monospace">
+    <div id="personal-info" >
+        <div id="main-data">
+            <div id="edit-bar">
+                <div class="d-flex flex-row-reverse">
+                    @if (Model.IsActive)
+                    {
+                        <a asp-action="Edit" asp-controller="Members" asp-route-id="@Model.Member?.Email">Edit</a>
+                    }
+                </div>
+            </div>
+            <div id="data" class="d-flex justify-content-between">
+                <div id="txt-data">
+                    <div>
+                        <dl class="row">
+                            <dt class="col-md-2">
+                                @Html.DisplayNameFor(model => model.Member.Email)
+                            </dt>
+                            <dd class="col-md-10">
+                                @Html.DisplayFor(model => model.Member.Email)
+                            </dd>
+                            <dt class="col-md-2">
+                                @Html.DisplayNameFor(model => model.Member.Firstname)
+                            </dt>
+                            <dd class="col-md-10">
+                                @Html.DisplayFor(model => model.Member.Firstname)
+                            </dd>
+                            <dt class="col-md-2">
+                                @Html.DisplayNameFor(model => model.Member.Lastname)
+                            </dt>
+                            <dd class="col-md-10">
+                                @Html.DisplayFor(model => model.Member.Lastname)
+                            </dd>
+                            <dt class="col-md-2">
+                                @Html.DisplayNameFor(model => model.Member.Nationality)
+                            </dt>
+                            <dd class="col-md-10">
+                                @Html.DisplayFor(model => model.Member.Nationality)
+                            </dd>
+                        </dl>
+                    </div>
+                </div>
+                <div id="personal-img">
+                    <img src="@Url.Content(Model.Member.Image)" width="100" height="100" />
+                </div>
+            </div>
+        </div>
+        <div id="addresses">
+            <div class="border-top p-2">
+                <div>
+                    <h4>Addresses</h4>
+                </div>
+            </div>
+            <div class="mt-2">
+                @foreach (var address in Model.MemberAddresses)
+                {
+                    <div class="d-flex justify-content-between align-content-center">
+                        <div class="pt-2 fs-3 font-monospace">
+                            @address.Address
+                        </div>
+                        @if (Model.IsActive)
+                        {
+                            <div>
+                                <form asp-action="DeleteAddress">
+                                    <input type="hidden" asp-for="@address.Address" name="Address" />
+                                    <button type="submit" class="btn btn-outline-danger">Delete</button>
+                                </form>
+                            </div>
+                        }
+                    </div>
+                }
+            </div>
+            @if (Model.IsActive)
+            {
+                <div class="d-flex  align-content-center">
+                    <button class="btn btn-outline-info" data-toggle="modal" data-target="#newAddress">
+                       New Address <i class="glyphicon glyphicon-plus"></i>
+                    </button>
+                </div>
+                <div id="newAddress" class="modal fade" role="dialog">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                            </div>
+                            <div class="modal-body">
+                                <form asp-action="NewAddress">
+                                    <div class="form-group">
+                                        <input type="text" asp-for="@newAdress.Address" name="Address" />
+                                    </div>
+                                    <div class="form-group">
+                                        <button type="submit" class="btn btn-primary">Add Address</button>
+                                    </div>
+                                </form>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            }
+        </div>
+        <div id="phonenos">
+            <div class="border-top p-2">
+                <div>
+                    <h4>Phone Numbers</h4>
+                </div>
+            </div>
+            <div class="mt-2">
+                @foreach (var phone in Model.MemberPhoneNumbers)
+                {
+                    <div class="d-flex justify-content-between align-content-center">
+                        <div class="pt-2 fs-3 font-monospace">
+                            @phone.PhoneNo
+                        </div>
+                        @if (Model.IsActive)
+                        {
+                            <div>
+                                <form asp-action="DeletePhone">
+                                    <input type="hidden" asp-for="@phone.PhoneNo" name="PhoneNo" />
+                                    <button type="submit" class="btn btn-outline-danger">Delete</button>
+                                </form>
+                            </div>
+                        }
+                    </div>
+                }
+            </div>
+            @if (Model.IsActive)
+            {
+                <div class="d-flex  align-content-center">
+                    <button class="btn btn-outline-info" data-toggle="modal" data-target="#newPhoneno">
+                        Add Phone No <i class="glyphicon glyphicon-plus"></i>
+                    </button>
+                </div>
+                <div id="newPhoneno" class="modal fade" role="dialog">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                            </div>
+                            <div class="modal-body">
+                                <form asp-action="NewPhone">
+                                    <div class="form-group">
+                                        <input type="tel" asp-for="@newPhoneNo.PhoneNo" name="PhoneNo" />
+                                    </div>
+                                    <div class="form-group">
+                                        <button type="submit" class="btn btn-primary">Add PhoneNo</button>
+                                    </div>
+                                </form>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+    <div id="friends">
+        <div class="border-top p-2">
+            <div>
+                <h4>Friends</h4>
+            </div>
+        </div>
+        <div class="d-flex flex-wrap gap-2">
+            @foreach (var friend in Model.Friends)
+            {
+                <div class="d-flex flex-column m-3 text-center">
+                    <img src="@Url.Content(friend.Image)" width="100" height="100" />
+                    <label>@friend.Firstname</label>
+                </div>
+            }
+        </div>
+    </div>
+    <div id="visits">
+        <div class="border-top p-2">
+            <div>
+                <h4>Visited Places</h4>
+            </div>
+        </div>
+        <div class="d-flex">
+            @foreach (var visit in Model.Visits)
+            {
+                <div class="d-flex flex-column m-3 text-center">
+                    <img src="@Url.Content(visit.Photo)" width="100" height="100" />
+                    <label>
+                        @visit.Name
+                        @if (visit.Liked)
+                        {
+                            <i class="glyphicon glyphicon-heart-empty"></i>
+                        }
+                    </label>
+                </div>
+            }
+        </div>
+    </div>
+</div>

@@ -1,0 +1,305 @@
+
+
+
+--  Create Member
+
+CREATE TABLE Member (
+Email VarChar(50) NOT NULL UNIQUE ,
+Password VarChar(50) ,
+Firstname VarChar(50) ,
+Lastname VarChar(50) ,
+Nationality VarChar(50) ,
+Image Varchar(50) ,
+PRIMARY KEY(Email)
+);
+
+
+--  Create Place
+
+CREATE TABLE Place (
+Name VarChar(50) NOT NULL UNIQUE ,
+Buildingdate Date ,
+MapLongitude VarChar(50) ,
+MapLatitude VarChar(50) ,
+Type tinyint ,
+Image Varchar(50) ,
+AdminEmail VarChar(50) ,
+PRIMARY KEY(Name),
+FOREIGN KEY(AdminEmail) REFERENCES Member(Email) ON DELETE CASCADE
+);
+
+
+--  Create City
+
+CREATE TABLE City (
+Name VarChar(50) NOT NULL UNIQUE ,
+Location VarChar(50) ,
+Coastal Bit ,
+PRIMARY KEY(Name),
+FOREIGN KEY(Name) REFERENCES Place(Name) ON DELETE CASCADE
+);
+
+
+
+--  Create Restaurant
+
+CREATE TABLE Restaurant (
+Name VarChar(50) NOT NULL UNIQUE ,
+Cuisine VarChar(50) ,
+Style VarChar(50) ,
+PRIMARY KEY(Name),
+FOREIGN KEY(Name) REFERENCES Place(Name) ON DELETE CASCADE
+);
+
+
+
+--  Create Hotel
+
+CREATE TABLE Hotel (
+Name VarChar(50) NOT NULL UNIQUE ,
+PRIMARY KEY(Name),
+FOREIGN KEY(Name) REFERENCES Place(Name) ON DELETE CASCADE
+);
+
+
+
+--  Create Museum
+
+CREATE TABLE Museum (
+Name VarChar(50) NOT NULL UNIQUE ,
+OpenTime Time ,
+CloseTime Time ,
+PRIMARY KEY(Name),
+FOREIGN KEY(Name) REFERENCES Place(Name) ON DELETE CASCADE
+);
+
+
+
+--  Create RatingCriteria
+
+CREATE TABLE RatingCriteria (
+PlaceName VarChar(50) NOT NULL,
+Name VarChar(50) NOT NULL,
+MemberEmail VarChar(50) ,
+PRIMARY KEY(Name ,PlaceName),
+FOREIGN KEY(MemberEmail) REFERENCES Member(Email) ON DELETE CASCADE ,
+FOREIGN KEY(PlaceName) REFERENCES Place(Name)
+);
+
+
+
+--  Create FriendRequest
+
+CREATE TABLE FriendRequest (
+MemberEmail VarChar(50) NOT NULL,
+Member2Email VarChar(50) NOT NULL,
+Accepted Bit ,
+PRIMARY KEY(MemberEmail ,Member2Email),
+FOREIGN KEY(MemberEmail) REFERENCES Member(Email) ,
+FOREIGN KEY(Member2Email) REFERENCES Member(Email)
+);
+
+
+
+--  Create Friend
+
+CREATE TABLE Friend (
+MemberEmail VarChar(50) NOT NULL,
+Member2Email VarChar(50) NOT NULL,
+PRIMARY KEY(MemberEmail ,Member2Email),
+FOREIGN KEY(MemberEmail) REFERENCES Member(Email) ,
+FOREIGN KEY(Member2Email) REFERENCES Member(Email)
+);
+
+
+
+--  Create Invitation
+
+CREATE TABLE Invitation (
+MemberEmail VarChar(50) NOT NULL,
+Member2Email VarChar(50) NOT NULL,
+PlaceName VarChar(50) NOT NULL,
+Accepted Bit ,
+SentTime DateTime ,
+PRIMARY KEY(MemberEmail ,Member2Email ,PlaceName),
+FOREIGN KEY(MemberEmail) REFERENCES Member(Email) ,
+FOREIGN KEY(Member2Email) REFERENCES Member(Email) ,
+FOREIGN KEY(PlaceName) REFERENCES Place(Name)
+);
+
+
+--  Create Message
+
+CREATE TABLE Message (
+MemberEmail VarChar(50) NOT NULL,
+Member2Email VarChar(50) NOT NULL,
+SentTime VarChar(25) NOT NULL,
+Content VarChar(50) ,
+Reply VarChar(50) ,
+PRIMARY KEY(MemberEmail ,Member2Email, SentTime),
+FOREIGN KEY(MemberEmail) REFERENCES Member(Email) ,
+FOREIGN KEY(Member2Email) REFERENCES Member(Email)
+);
+
+
+--  Create Visit
+
+CREATE TABLE Visit (
+MemberEmail VarChar(50) NOT NULL,
+PlaceName VarChar(50) NOT NULL,
+Liked Bit ,
+PRIMARY KEY(MemberEmail ,PlaceName),
+FOREIGN KEY(MemberEmail) REFERENCES Member(Email) ,
+FOREIGN KEY(PlaceName) REFERENCES Place(Name)
+);
+
+
+
+--  Create Image
+
+CREATE TABLE Image (
+MemberEmail VarChar(50) NOT NULL,
+PlaceName VarChar(50) NOT NULL,
+Src VarChar(50) NOT NULL,
+PRIMARY KEY(Src ,MemberEmail ,PlaceName),
+FOREIGN KEY(MemberEmail) REFERENCES Member(Email) ,
+FOREIGN KEY(PlaceName) REFERENCES Place(Name)
+);
+
+
+
+--  Create Comment
+
+CREATE TABLE Comment (
+MemberEmail VarChar(50) NOT NULL,
+PlaceName VarChar(50) NOT NULL,
+Content VarChar(100) NOT NULL,
+PRIMARY KEY(Content ,MemberEmail ,PlaceName),
+FOREIGN KEY(MemberEmail) REFERENCES Member(Email) ,
+FOREIGN KEY(PlaceName) REFERENCES Place(Name)
+);
+
+
+
+--  Create Hashtag
+
+CREATE TABLE Hashtag (
+MemberEmail VarChar(50) NOT NULL,
+PlaceName VarChar(50) NOT NULL,
+Content VarChar(50) NOT NULL,
+PRIMARY KEY(Content ,MemberEmail ,PlaceName),
+FOREIGN KEY(MemberEmail) REFERENCES Member(Email) ,
+FOREIGN KEY(PlaceName) REFERENCES Place(Name)
+);
+
+
+
+--  Create Question
+
+CREATE TABLE Question (
+MemberEmail VarChar(50) NOT NULL,
+PlaceName VarChar(50) NOT NULL,
+Content VarChar(50) NOT NULL,
+Answer VarChar(50) ,
+PRIMARY KEY(Content ,MemberEmail ,PlaceName),
+FOREIGN KEY(MemberEmail) REFERENCES Member(Email) ,
+FOREIGN KEY(PlaceName) REFERENCES Place(Name)
+);
+
+
+
+--  Create Rating
+
+CREATE TABLE Rating (
+MemberEmail VarChar(50) NOT NULL,
+CriteriaName VarChar(50) NOT NULL,
+PlaceName VarChar(50) NOT NULL,
+Value tinyint ,
+PRIMARY KEY(MemberEmail ,CriteriaName ,PlaceName),
+FOREIGN KEY(MemberEmail) REFERENCES Member(Email) ,
+FOREIGN KEY(CriteriaName) REFERENCES RatingCriteria(Name) ,
+FOREIGN KEY(PlaceName) REFERENCES RatingCriteria(PlaceName)
+);
+
+
+
+--  Create Member_phoneNo
+
+CREATE TABLE MemberPhoneNo (
+MemberEmail VarChar(50) NOT NULL,
+PhoneNo VarChar(50) NOT NULL,
+PRIMARY KEY(MemberEmail ,PhoneNo),
+FOREIGN KEY(MemberEmail) REFERENCES Member(Email)
+);
+
+
+
+--  Create Member_address
+
+CREATE TABLE MemberAddress (
+MemberEmail VarChar(50) NOT NULL,
+Address VarChar(50) NOT NULL UNIQUE,
+PRIMARY KEY(MemberEmail ,Address),
+FOREIGN KEY(MemberEmail) REFERENCES Member(Email)
+);
+
+
+
+--  Create Hotel_room
+
+CREATE TABLE HotelRoom (
+HotelName VarChar(50) NOT NULL,
+Type VarChar(50) NOT NULL,
+Price Float(38) ,
+PRIMARY KEY(HotelName ,Type),
+FOREIGN KEY(HotelName) REFERENCES Hotel(Name)
+);
+
+
+
+--  Create Hotel_facility
+
+CREATE TABLE HotelFacility (
+HotelName VarChar(50) NOT NULL,
+Name VarChar(50) NOT NULL,
+Description VarChar(50) ,
+PRIMARY KEY(HotelName ,Name),
+FOREIGN KEY(HotelName) REFERENCES Hotel(Name)
+);
+
+
+
+--  Create Museum_ticket
+
+CREATE TABLE MuseumTicket (
+MuseumName VarChar(50) NOT NULL,
+Type VarChar(50) NOT NULL,
+Price Float(38) ,
+PRIMARY KEY(MuseumName , Type),
+FOREIGN KEY(MuseumName) REFERENCES Museum(Name)
+);
+
+
+
+--  Create Museum_monument
+
+CREATE TABLE MuseumMonument (
+MuseumName VarChar(50) NOT NULL,
+Name VarChar(50) NOT NULL,
+Description VarChar(50) ,
+PRIMARY KEY(MuseumName ,Name),
+FOREIGN KEY(MuseumName) REFERENCES Museum(Name)
+);
+
+
+
+--  Create Place_photo
+
+CREATE TABLE PlacePhoto (
+AdminEmail VarChar(50) NOT NULL,
+PlaceName VarChar(50) NOT NULL,
+Photo VarChar(50) NOT NULL,
+PRIMARY KEY(AdminEmail ,PlaceName ,Photo),
+FOREIGN KEY(AdminEmail) REFERENCES Member(Email) ,
+FOREIGN KEY(PlaceName) REFERENCES Place(Name)
+);

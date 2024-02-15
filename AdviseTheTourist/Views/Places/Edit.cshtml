@@ -1,0 +1,92 @@
+﻿@model AdviseTheTourist.Models.NewPlaceModel
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<div class="container">
+    <h4>Edit Place</h4>
+    <hr />
+    <div class="row">
+        <div class="col-md-4">
+            <form asp-action="Edit">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <input type="hidden" asp-for="Name" />
+                <div class="form-group">
+                    <label asp-for="Buildingdate" class="control-label"></label>
+                    <input asp-for="Buildingdate" class="form-control" />
+                    <span asp-validation-for="Buildingdate" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="MapLongitude" class="control-label"></label>
+                    <input asp-for="MapLongitude" class="form-control" />
+                    <span asp-validation-for="MapLongitude" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="MapLatitude" class="control-label"></label>
+                    <input asp-for="MapLatitude" class="form-control" />
+                    <span asp-validation-for="MapLatitude" class="text-danger"></span>
+                </div>
+                <input type="hidden" asp-for="Type" />
+                <input type="hidden" asp-for="Image" />
+                <div class="form-group">
+                    <label asp-for="Image" class="control-label"></label>
+                    <input asp-for="ImageFile" class="form-control" />
+                    <span asp-validation-for="ImageFile" class="text-danger"></span>
+                </div>
+                @switch ((PlaceType)Model.Type)
+                {
+                    case PlaceType.City:
+                        <div class="form-group">
+                            <label asp-for="Location" class="control-label"></label>
+                            <input asp-for="Location" class="form-control" />
+                            <span asp-validation-for="Location" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="Coastal" class="control-label"></label>
+                            <input asp-for="Coastal" />
+                            <span asp-validation-for="Coastal" class="text-danger"></span>
+                        </div>
+                        break;
+                    case PlaceType.Museum:
+                        <div class="form-group">
+                            <label asp-for="OpenTime" class="control-label"></label>
+                            <input asp-for="OpenTime" class="form-control" />
+                            <span asp-validation-for="OpenTime" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="CloseTime" class="control-label"></label>
+                            <input asp-for="CloseTime" class="form-control" />
+                            <span asp-validation-for="CloseTime" class="text-danger"></span>
+                        </div>
+                        break;
+                    case PlaceType.Restaurant:
+                        <div class="form-group">
+                            <label asp-for="Cuisine" class="control-label"></label>
+                            <input asp-for="Cuisine" class="form-control" />
+                            <span asp-validation-for="Cuisine" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="Style" class="control-label"></label>
+                            <input asp-for="Style" class="form-control" />
+                            <span asp-validation-for="Style" class="text-danger"></span>
+                        </div>
+                        break;
+                    default:
+                        break;
+                }
+                <div class="form-group">
+                    <input type="submit" value="Save" class="btn btn-primary" />
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div>
+        <a asp-action="Index">Back to List</a>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

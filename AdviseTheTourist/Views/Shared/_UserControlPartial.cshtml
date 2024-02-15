@@ -1,0 +1,24 @@
+﻿<ul class="nav navbar-nav navbar-right">
+    @if (!User.Identity?.IsAuthenticated ?? true)
+    {
+        <li><a asp-controller="Members" asp-action="Create"><span class="glyphicon glyphicon-user"></span> Sign Up</a></li>
+        <li><a asp-controller="Login" asp-action="Index"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
+    }
+    else
+    {
+        <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" id="navbardrop" data-toggle="dropdown">
+                <i class="glyphicon glyphicon-user"></i>
+            </a>
+            <div class="dropdown-menu">
+                <a class="dropdown-item" asp-action="Index" asp-controller="Profile">Profile</a>
+                <a class="dropdown-item" asp-action="Index" asp-controller="Messages">Messages</a>
+                <a class="dropdown-item" asp-action="Index" asp-controller="Invitations">Ivitaions</a>
+                <a class="dropdown-item" asp-action="Index" asp-controller="Friends">Friends</a>
+                <a class="dropdown-item" asp-action="Index" asp-controller="FriendRequests">Friend Requests</a>
+                <a class="dropdown-item" asp-action="Index" asp-controller="Places">Admin Places</a>
+                <a class="dropdown-item" asp-action="LogOut" asp-controller="Home">Log Out</a>
+            </div>
+        </li>
+    }
+</ul>

@@ -1,0 +1,36 @@
+﻿@model IEnumerable<AdviseTheTourist.Models.FriendModel>
+
+@{
+    ViewData["Title"] = "Friends";
+}
+@{
+    await Html.RenderPartialAsync("_HeaderPartial", new List<string> { "_UserControlPartial" });
+}
+<div class="container">
+    <h4>Friends</h4>
+    <div>
+        <a asp-action="Index" asp-controller="Members">Search New Friends</a>
+    </div>
+    <hr />
+    <div class="d-flex gap-2">
+        @foreach (var item in Model)
+        {
+            <div class="d-flex flex-column">
+                <img src="@Url.Content(item.Image)" width="100" height="100" />
+                <div>
+                    <label>@item.Firstname @item.Lastname</label>
+                </div>
+                <div>
+                    <form asp-action="Index" asp-controller="Profile">
+                        <input type="hidden" name="email" value="@item.Email" />
+                        <div class="form-group">
+                            <button class="btn btn-info">
+                                View Profile
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        }
+    </div>
+</div>

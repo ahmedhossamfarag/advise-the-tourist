@@ -1,0 +1,125 @@
+﻿@model AdviseTheTourist.Models.ProfileModel
+
+@{
+    ViewData["Title"] = "Index";
+    var newAdress = new MemberAddress();
+    var newPhoneNo = new MemberPhoneNo();
+}
+@{
+    await Html.RenderPartialAsync("_HeaderPartial", new List<string> { "_UserControlPartial" });
+}
+@if (Model.IsActive)
+{
+    <a asp-action="Edit" asp-controller="Members" asp-route-id="@Model.Member?.Email">Edit</a>
+}
+<div>
+    <dl class="row">
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Member.Email)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Member.Email)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Member.Firstname)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Member.Firstname)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Member.Lastname)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Member.Lastname)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Member.Nationality)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Member.Nationality)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Member.Image)
+        </dt>
+        <dd class="col-sm-10">
+            <img src="@Url.Content(Model.Member.Image)" width="100" height="100" />
+        </dd>
+    </dl>
+</div>
+<table>
+    @foreach (var address in Model.MemberAddresses)
+    {
+        <tr>
+            <td>@address.Address</td>
+            @if (Model.IsActive)
+            {
+                <td>
+                    <form asp-action="DeleteAddress">
+                        <input type="hidden" asp-for="@address.Address" name="Address" />
+                        <button type="submit" class="btn btn-danger">Delete</button>
+                    </form>
+                </td>
+            }
+        </tr>
+    }
+</table>
+@if(Model.IsActive)
+{
+    <form asp-action="NewAddress">
+        <div class="form-group">
+            <label asp-for="@newAdress.Address" class="control-label"></label>
+            <input type="text" asp-for="@newAdress.Address" name="Address" />
+        </div>
+        <div class="form-group">
+            <button type="submit" class="btn btn-primary">Add Address</button>
+        </div>
+    </form>
+}
+<table>
+    @foreach (var phone in Model.MemberPhoneNumbers)
+    {
+        <tr>
+            <td>@phone.PhoneNo</td>
+            @if(Model.IsActive)
+            {
+                <td>
+                    <form asp-action="DeletePhone">
+                        <input type="hidden" asp-for="@phone.PhoneNo" name="PhoneNo" />
+                        <button type="submit" class="btn btn-danger">Delete</button>
+                    </form>
+                </td>
+            }
+        </tr>
+    }
+</table>
+@if (Model.IsActive)
+{
+    <form asp-action="NewPhone">
+        <div>
+            <label asp-for="@newPhoneNo.PhoneNo" class="control-label"></label>
+            <input type="tel" asp-for="@newPhoneNo.PhoneNo" name="PhoneNo" />
+        </div>
+        <div class="form-group">
+            <button type="submit" class="btn btn-primary">Add PhoneNo</button>
+        </div>
+    </form>
+}
+<div class="flex-sm-row">
+    @foreach (var friend in Model.Friends)
+    {
+       <div class="flex-column">
+            <label>@friend.Firstname</label>
+            <img src="@Url.Content(friend.Image)" width="100" height="100" />
+       </div>
+    }
+</div>
+<div>
+    @foreach (var visit in Model.Visits)
+    {
+        <div>
+            <img src="@Url.Content(visit.Photo)" width="100" height="100" />
+            <label>@visit.Name</label>
+            <label>@visit.Liked</label>
+        </div>
+    }
+</div>

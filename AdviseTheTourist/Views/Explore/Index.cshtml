@@ -1,0 +1,22 @@
+﻿@model IEnumerable<AdviseTheTourist.Models.Place>
+@{
+	ViewData["Title"] = "Explore";
+}
+@{
+	await Html.RenderPartialAsync("_HeaderPartial", new List<string> { "_UserControlPartial" });
+}
+<div class="d-flex flex-wrap justify-content-around gap-2 m-5">
+	@foreach(var place in Model)
+	{
+		<a asp-action="" asp-controller="PlaceView" asp-route-name="@place.Name">
+			<div class="d-flex flex-column">
+				<div>
+					<img src="@Url.Content(place.Image)" width="150" height="180" />
+				</div>
+				<div class="text-center">
+					@place.Name
+				</div>
+			</div>
+		</a>
+	}
+</div>

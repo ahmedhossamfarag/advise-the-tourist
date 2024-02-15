@@ -1,0 +1,72 @@
+﻿@model IEnumerable<AdviseTheTourist.Models.Message>
+@using AdviseTheTourist.Controllers;
+@{
+    ViewData["Title"] = "Messages";
+    var email = User.FindFirst(c => c.Type == "Emails")?.Value ?? "";
+   
+}
+@{
+    await Html.RenderPartialAsync("_HeaderPartial", new List<string> { "_UserControlPartial" });
+}
+
+<div class="container">
+    <h1>Messages</h1>
+
+    <p>
+        <a asp-action="Create">New Message</a>
+    </p>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.MemberEmail)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Member2Email)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Reply)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.SentTime)
+                </th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td class="pt-4">
+                        @Html.DisplayFor(modelItem => item.MemberEmail)
+                    </td>
+                    <td class="pt-4">
+                        @Html.DisplayFor(modelItem => item.Member2Email)
+                    </td>
+                    <td class="pt-4">
+                        @(!string.IsNullOrEmpty(item.Reply))
+                    </td>
+                    <td class="pt-4">
+                        @Html.DisplayFor(modelItem => item.SentTime)
+                    </td>
+                    <td>
+                        <div class="d-flex">
+                            <form asp-action="Details">
+                                <input type="hidden" name="MemberEmail" value="@item.MemberEmail" />
+                                <input type="hidden" name="Member2Email" value="@item.Member2Email" />
+                                <input type="hidden" name="SentTime" value="@item.SentTime" />
+                                <button type="submit" class="btn btn-outline-info">Details</button>
+                            </form>
+                            <form asp-action="Delete">
+                                <input type="hidden" name="MemberEmail" value="@item.MemberEmail" />
+                                <input type="hidden" name="Member2Email" value="@item.Member2Email" />
+                                <input type="hidden" name="SentTime" value="@item.SentTime" />
+                                <button type="submit" class="btn btn-outline-danger">Delete</button>
+                            </form>
+                        </div>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

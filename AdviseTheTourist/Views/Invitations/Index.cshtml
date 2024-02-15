@@ -1,0 +1,95 @@
+﻿@model IEnumerable<AdviseTheTourist.Models.Invitation>
+
+@{
+    ViewData["Title"] = "Invitations";
+    var email = User.Claims.FirstOrDefault(c => c.Type == "Email")?.Value;
+}
+@{
+    await Html.RenderPartialAsync("_HeaderPartial", new List<string> { "_UserControlPartial" });
+}
+<div class="container">
+
+    <h1>Invitations</h1>
+
+    <p>
+        <a asp-action="Create">New Invitation</a>
+    </p>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.MemberEmail)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Member2Email)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.PlaceName)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Accepted)
+                </th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td class="pt-4">
+                        @Html.DisplayFor(modelItem => item.MemberEmail)
+                    </td>
+                    <td class ="pt-4">
+                        @Html.DisplayFor(modelItem => item.Member2Email)
+                    </td>
+                    <td class="pt-4">
+                        @Html.DisplayFor(modelItem => item.PlaceName)
+                    </td>
+                    <td class="pt-4">
+                        @Html.DisplayFor(modelItem => item.Accepted)
+                    </td>
+                    @if (item.Member2Email == email)
+                    {
+                        <td class="d-flex flex-row-reverse">
+                            <form asp-action="Edit">
+                                <input type="hidden" asp-for="@item.MemberEmail" name="MemberEmail" />
+                                <input type="hidden" asp-for="@item.Member2Email" name="Member2Email" />
+                                <input type="hidden" asp-for="@item.PlaceName" name="PlaceName" />
+                                <input type="submit" value="Reject" class="btn btn-outline-danger" />
+                            </form>
+                            <form asp-action="Details">
+                                <input type="hidden" asp-for="@item.MemberEmail" name="MemberEmail" />
+                                <input type="hidden" asp-for="@item.Member2Email" name="Member2Email" />
+                                <input type="hidden" asp-for="@item.PlaceName" name="PlaceName" />
+                                <input type="submit" value="Details" class="btn btn-outline-info" />
+                            </form>
+                            <form asp-action="Accept">
+                                <input type="hidden" asp-for="@item.MemberEmail" name="MemberEmail" />
+                                <input type="hidden" asp-for="@item.Member2Email" name="Member2Email" />
+                                <input type="hidden" asp-for="@item.PlaceName" name="PlaceName" />
+                                <input type="submit" value="Accept" class="btn btn-outline-primary" />
+                            </form>
+                        </td>
+                    }
+                    else
+                    {
+                        <td class="d-flex flex-row-reverse">
+                            <form asp-action="Delete">
+                                <input type="hidden" asp-for="@item.MemberEmail" name="MemberEmail" />
+                                <input type="hidden" asp-for="@item.Member2Email" name="Member2Email" />
+                                <input type="hidden" asp-for="@item.PlaceName" name="PlaceName" />
+                                <input type="submit" value="Delete" class="btn btn-outline-danger" />
+                            </form>
+                            <form asp-action="Details">
+                                <input type="hidden" asp-for="@item.MemberEmail" name="MemberEmail" />
+                                <input type="hidden" asp-for="@item.Member2Email" name="Member2Email" />
+                                <input type="hidden" asp-for="@item.PlaceName" name="PlaceName" />
+                                <input type="submit" value="Details" class="btn btn-outline-info" />
+                            </form>
+                        </td>
+                    }
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

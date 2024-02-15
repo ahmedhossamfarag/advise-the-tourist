@@ -1,0 +1,67 @@
+﻿@model AdviseTheTourist.Models.Message
+
+@{
+    ViewData["Title"] = "Details"; 
+    var email = User.FindFirst(c => c.Type == "Email")?.Value ?? "";
+
+}
+
+<div class="container">
+    <h3>Message Details</h3>
+
+    <hr />
+    <div>
+        <dl class="row">
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.MemberEmail)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.MemberEmail)
+            </dd>
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.Member2Email)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.Member2Email)
+            </dd>
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.SentTime)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.SentTime)
+            </dd>
+        </dl>
+        <hr />
+        <dl class="row">
+            <dt class="col-sm-12">
+                @Html.DisplayNameFor(model => model.Content)
+            </dt>
+            <dd class="col-sm-12 mt-2">
+                @Html.DisplayFor(model => model.Content)
+            </dd>
+        </dl>
+        <hr />
+        <dl class="row">
+            <dt class="col-sm-12">
+                @Html.DisplayNameFor(model => model.Reply)
+            </dt>
+            <dd class="col-sm-12 mt-2">
+                @Html.DisplayFor(model => model.Reply)
+            </dd>
+        </dl>
+        <hr />
+    </div>
+    <div>
+        @if (Model.Member2Email == email && string.IsNullOrEmpty(Model.Reply))
+        {
+            <form asp-action="Edit">
+                <input type="hidden" name="MemberEmail" value="@Model.MemberEmail" />
+                <input type="hidden" name="Member2Email" value="@Model.Member2Email" />
+                <input type="hidden" name="SentTime" value="@Model.SentTime" />
+                <button type="submit" class="btn btn-outline-info">Reply</button>
+            </form>
+        }
+        |
+        <a asp-action="Index">Back to List</a>
+    </div>
+</div>

@@ -1,0 +1,48 @@
+﻿@model IEnumerable<AdviseTheTourist.Models.Place>
+
+@{
+    ViewData["Title"] = "Places";
+}
+@{
+    await Html.RenderPartialAsync("_HeaderPartial", new List<string> { "_UserControlPartial" });
+}
+
+<div class="container">
+    <p>
+        <a asp-action="Create">Add New Place</a>
+    </p>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.Image)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Name)
+                </th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        <img src="@Url.Content(item.Image)" width="30" height="30" />
+                    </td>
+                    <td class="pt-4">
+                        @Html.DisplayFor(modelItem => item.Name)
+                    </td>
+                    <td>
+                        <div class="d-flex flex-row-reverse g-4 pt-2">
+                            <a asp-action="Delete" asp-route-id="@item.Name">Delete</a>  &nbsp;&nbsp;|&nbsp;&nbsp;
+                            <a asp-action="Edit" asp-route-id="@item.Name">Edit</a>  &nbsp;&nbsp;|&nbsp;&nbsp;
+                            <a asp-action="Index" asp-controller="PlaceView" asp-route-name="@item.Name">View</a> &nbsp;&nbsp;|&nbsp;&nbsp;
+                            <a asp-action="Details" asp-route-id="@item.Name">Details</a>
+                        </div> 
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

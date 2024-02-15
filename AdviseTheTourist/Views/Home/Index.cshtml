@@ -1,0 +1,110 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+    ViewData["Header"] = true;
+}
+@{
+    await Html.RenderPartialAsync("_HeaderPartial", new List<string> { "_UserControlPartial", "_SearchControlPartial" });
+}
+@{
+    string[] types = { "Hotels", "Restaurants", "Museums", "Cities", "Others" };
+}
+
+
+<div class="container vh-100 d-flex align-items-center">
+    <div id="myCarousel" class="carousel slide" data-ride="carousel">
+        <!-- Indicators -->
+        <ol class="carousel-indicators">
+            @for(var i = 0; i < 8; i++)
+            {
+                <li data-target="#myCarousel" data-slide-to="@i" class="@(i == 0 ? "active" : "") bg-primary"></li>
+            }
+        </ol>
+
+        <!-- Wrapper for slides -->
+        <div class="carousel-inner">
+            @for(var i = 1; i <= 8; i++)
+            {
+                <div class="item @(i == 1 ? "active" : "")">
+                    <img src="~/Images/Main/M@(i).png" style="width:100%" alt="M@(i)">
+                </div>
+            }
+        </div>
+
+
+        <!-- Left and right controls -->
+        <a class="left carousel-control" href="#myCarousel" data-slide="prev">
+            <span class="glyphicon glyphicon-chevron-left"></span>
+            <span class="sr-only">Previous</span>
+        </a>
+        <a class="right carousel-control" href="#myCarousel" data-slide="next">
+            <span class="glyphicon glyphicon-chevron-right"></span>
+            <span class="sr-only">Next</span>
+        </a>
+    </div>
+</div>
+
+<div class="d-flex flex-wrap justify-content-around align-items-center gap-5  vh-100">
+    @for(var i = 0; i < types.Length; i++)
+    {
+       <a asp-action="" asp-controller="Explore" asp-route-id="@i">
+            <div class="img-txt">
+                <div class="box">
+                    <img src="~/Images/Main/@(types[i]).jpeg" width="200" height="250" alt="hotels" />
+                </div>
+                <div class="box over">
+                    <div>
+                        @types[i]
+                    </div>
+                </div>
+            </div>
+       </a>
+    }
+</div>
+
+
+<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+<script type="text/javascript">
+    var searchbox = $("#search-box")
+    var searchlist = $("#search-results-list");
+    var showlist = function () { searchlist.css("display","block") }
+    var hidelist = function () { searchlist.css("display","none") }
+
+    $(function () {
+        searchbox.keyup(function () {
+            GetPlaces();
+        }).focus(function () { if (searchlist.children().length > 0) showlist(); })
+
+        document.body.onclick = function (e) { 
+            if (e.srcElement != searchbox[0])
+                hidelist()
+        }
+    });
+    function GetPlaces() {
+        var placeName = $.trim(searchbox.val());
+        if(placeName.length > 0)
+        {
+            try {
+                const data = { name: placeName };
+                $.ajax({ 
+                    url: '/Home/SearchPlaces', 
+                    type: 'POST', 
+                    data: data, 
+                    success: function (result, status, xhr) { 
+                        var list = searchlist
+                        list.empty();
+                        if (result.length > 0) {
+                            showlist()
+                            for (var place of result) {
+                                list.append(`<li><a href="/PlaceView?name=${place}">${place}</a></li>`) 
+                            }
+                        }
+                        else {
+                            hidelist()
+                        }
+                    }, 
+                    error: function (xhr, status, error) { } 
+                });
+            } catch { }
+        }
+    }
+</script>

@@ -1,0 +1,61 @@
+1800,1800,True,0
+200,200,-16744193,-1
+120,60,-256,-65536,-8323073,-8388608
+120,120,-32704,-16776961,-8323073,-8388353
+30
+check email,False,True,1195,395,0
+add member,True,False,1279,435,0
+friends,False,True,1311,1147,0
+request,True,False,1390,499,0
+place,False,True,1453,645,0
+place page,False,True,1420,747,0
+view requests,False,True,1366,1079,0
+members,False,True,1453,560,0
+invitations,False,True,716,1369,0
+places visited,False,True,1115,1284,0
+send mss,True,False,1207,1234,0
+massages,False,False,554,1381,0
+upload img,True,False,901,1398,0
+profile,False,True,401,1354,0
+question,True,False,276,1203,0
+add criteria,True,False,392,999,0
+rate,True,False,359,900,0
+comment,True,False,366,794,0
+hashtag,True,False,435,693,0
+places high likes,False,True,494,576,0
+places sort price,False,True,424,424,0
+places sort rat,False,True,580,381,0
+place rat,False,True,721,368,0
+common likes,False,True,857,403,0
+rec places,False,True,1076,374,0
+comments,True,True,1400,822,0
+hashtags,False,True,1399,887,0
+criterias,False,True,1404,953,0
+questions,False,True,1421,1014,0
+likes,False,True,958,339,0
+25
+Sign up,1478,182,2,check email,True,True,add member,True,False
+Send friendship requests,1618,298,2,request,True,False,members,False,True
+find friends,1676,434,1,members,False,True
+Search places pages,1752,573,1,place,True,True
+Open place page,1673,800,6,place page,True,True,place,True,True,comments,True,True,hashtags,True,True,criterias,True,True,questions,True,True
+View friendship requests,1577,1169,1,view requests,True,True
+View friend list,1570,1322,1,friends,True,True
+View invitations ,669,1566,1,invitations,True,True
+View places visited,1105,1555,1,places visited,True,True
+Send messages ,1447,1437,2,send mss,True,False,friends,True,True
+View messages,496,1574,1,massages,True,True
+Check profile ,320,1541,1,profile,True,True
+Upload images,905,1564,1,upload img,True,False
+Leave questions,86,1346,1,question,True,False
+Add rating criteria,268,1086,1,add criteria,True,False
+Rate a criteria ,178,920,1,rate,True,False
+Add comment,192,753,1,comment,True,False
+Add hashtag,170,610,1,hashtag,True,False
+place highest likes,236,461,1,places high likes,False,True
+places type sorted by prices,288,307,1,places sort price,False,True
+places type sorted rating,428,235,1,places sort rat,False,True
+top 10 common likes ,861,141,2,common likes,True,True,likes,True,True
+place overall rating,623,190,1,place rat,True,True
+recommended places,1185,158,3,rec places,True,True,likes,True,True,common likes,True,True
+View friend visits,1309,1513,2,friends,True,True,places visited,True,True

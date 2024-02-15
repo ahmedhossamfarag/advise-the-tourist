@@ -1,0 +1,73 @@
+﻿@model AdviseTheTourist.Models.RequestsModel
+
+@{
+    ViewData["Title"] = "FriendRequests";
+}
+@{
+    await Html.RenderPartialAsync("_HeaderPartial", new List<string> { "_UserControlPartial" });
+}
+<div class="container">
+    <div>
+        <a asp-action="Index" asp-controller="Members">Search New Friends</a>
+    </div>
+    <div id="requests">
+        <div><h4>Requests</h4></div>
+        <div>
+            <table class="table">
+                <tbody>
+                    @foreach (var item in Model.Requests)
+                    {
+                        <tr>
+                            <td class="pt-4">
+                                <label>@item.Firstname @item.Lastname</label>
+                            </td>
+                            <td class="d-flex flex-row-reverse">
+                                <form asp-action="Delete">
+                                    <input type="hidden" asp-for="@item.MemberEmail" name="MemberEmail" />
+                                    <input type="hidden" asp-for="@item.Member2Email" name="Member2Email" />
+                                    <input type="submit" value="Delete" class="btn btn-outline-danger" />
+                                </form>
+                                <form asp-action="Accept">
+                                    <input type="hidden" asp-for="@item.MemberEmail" name="MemberEmail" />
+                                    <input type="hidden" asp-for="@item.Member2Email" name="Member2Email" />
+                                    <input type="submit" value="Accept" class="btn btn-outline-info" />
+                                </form>
+                                <form asp-action="Reject">
+                                    <input type="hidden" asp-for="@item.MemberEmail" name="MemberEmail" />
+                                    <input type="hidden" asp-for="@item.Member2Email" name="Member2Email" />
+                                    <input type="submit" value="Reject" class="btn btn-outline-danger" />
+                                </form>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <hr />
+    <div id="your-requests">
+        <div><h4>Your Requests</h4></div>
+        <div>
+            <table class="table">
+                <tbody>
+                    @foreach (var item in Model.Responses)
+                    {
+                        <tr>
+                            <td class="pt-4">
+                                <label>@item.Firstname @item.Lastname</label>
+                            </td>
+                            <td class="d-flex flex-row-reverse">
+                                <form asp-action="Delete">
+                                    <input type="hidden" asp-for="@item.MemberEmail" name="MemberEmail" />
+                                    <input type="hidden" asp-for="@item.Member2Email" name="Member2Email" />
+                                    <input type="submit" value="Delete" class="btn btn-danger" />
+                                </form>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+
+        </div>
+    </div>
+</div>

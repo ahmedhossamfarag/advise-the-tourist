@@ -1,0 +1,510 @@
+﻿@model AdviseTheTourist.Models.PlaceModel
+
+@{
+    ViewData["Title"] = "Details";
+    var newHotelFacility = new HotelFacility();
+    var newHotelRoom = new HotelRoom();
+    var newMuseumMonument = new MuseumMonument();
+    var newMuseumTicket = new MuseumTicket();
+    var newPhoto = new NewPhotoModel();
+}
+@{
+    await Html.RenderPartialAsync("_HeaderPartial", new List<string> { "_UserControlPartial" });
+}
+
+<div class="container">
+    @if(Model.Place != null)
+    {
+        <div id="main-data">
+            <div class="d-flex justify-content-between">
+                <div>
+                    <div>
+                        <dl class="row">
+                            <dt class="col-md-4">
+                                @Html.DisplayNameFor(model => model.Place.Name)
+                            </dt>
+                            <dd class="col-md-8">
+                                @Html.DisplayFor(model => model.Place.Name)
+                            </dd>
+                            <dt class="col-md-4">
+                                @Html.DisplayNameFor(model => model.Place.Buildingdate)
+                            </dt>
+                            <dd class="col-md-8">
+                                @Html.DisplayFor(model => model.Place.Buildingdate)
+                            </dd>
+                            <dt class="col-md-4">
+                                @Html.DisplayNameFor(model => model.Place.MapLongitude)
+                            </dt>
+                            <dd class="col-md-8">
+                                @Html.DisplayFor(model => model.Place.MapLongitude)
+                            </dd>
+                            <dt class="col-md-4">
+                                @Html.DisplayNameFor(model => model.Place.MapLatitude)
+                            </dt>
+                            <dd class="col-md-8">
+                                @Html.DisplayFor(model => model.Place.MapLatitude)
+                            </dd>
+                            @if (Model?.City != null)
+                            {
+                                <dt class="col-md-4">
+                                    @Html.DisplayNameFor(model => model.City.Location)
+                                </dt>
+                                <dd class="col-md-8">
+                                    @Html.DisplayFor(model => model.City.Location)
+                                </dd>
+                                <dt class="col-md-4">
+                                    @Html.DisplayNameFor(model => model.City.Coastal)
+                                </dt>
+                                <dd class="col-md-8">
+                                    @Html.DisplayFor(model => model.City.Coastal)
+                                </dd>
+                            }
+
+                            @if (Model?.Museum != null)
+                            {
+                                <dt class="col-md-4">
+                                    @Html.DisplayNameFor(model => model.Museum.OpenTime)
+                                </dt>
+                                <dd class="col-md-8">
+                                    @Html.DisplayFor(model => model.Museum.OpenTime)
+                                </dd>
+                                <dt class="col-md-4">
+                                    @Html.DisplayNameFor(model => model.Museum.CloseTime)
+                                </dt>
+                                <dd class="col-md-8">
+                                    @Html.DisplayFor(model => model.Museum.CloseTime)
+                                </dd>
+                            }
+
+                            @if (Model?.Restaurant != null)
+                            {
+                                <dt class="col-md-4">
+                                    @Html.DisplayNameFor(model => model.Restaurant.Cuisine)
+                                </dt>
+                                <dd class="col-md-8">
+                                    @Html.DisplayFor(model => model.Restaurant.Cuisine)
+                                </dd>
+                                <dt class="col-md-4">
+                                    @Html.DisplayNameFor(model => model.Restaurant.Style)
+                                </dt>
+                                <dd class="col-md-8">
+                                    @Html.DisplayFor(model => model.Restaurant.Style)
+                                </dd>
+                            }
+                        </dl>
+                    </div>
+                </div>
+                <div>
+                    <img src="@Url.Content(Model.Place.Image)" width="200" height="200" />
+                </div>
+            </div>
+            <div>
+                <a asp-action="Edit" asp-route-id="@Model?.Place.Name">Edit</a> &nbsp;&nbsp; |&nbsp;&nbsp;
+                <a asp-action="Index" asp-controller="PlaceView" asp-route-name="@Model?.Place.Name">View</a> &nbsp;&nbsp;|&nbsp;&nbsp;
+                <a asp-action="Index">Back to List</a>
+            </div>
+        </div>
+    }
+    @if(Model.HotelFacilities != null)
+    {
+        <div id="hotel-fac">
+            <hr />
+            <div><h4>Hotel Facilities</h4></div>
+            <div>
+                <table class="table">
+                    @foreach (var facility in Model.HotelFacilities)
+                    {
+                        <tr>
+                            <td class="pt-4">@facility.Name</td>
+                            <td class="pt-4">@facility.Description</td>
+                            <td class="d-flex flex-row-reverse">
+                                <form asp-action="DeleteHotelFacility">
+                                    <input type="hidden" asp-for="@facility.HotelName" name="HotelName" />
+                                    <input type="hidden" asp-for="@facility.Name" name="Name" />
+                                    <input type="submit" value="Delete" class="btn btn-outline-danger" />
+                                </form>
+                            </td>
+                        </tr>
+                    }
+                </table>
+            </div>
+            <div>
+                <div class="d-flex  align-content-center">
+                    <button class="btn btn-outline-info" data-toggle="modal" data-target="#newFacility">
+                        New Facility <i class="glyphicon glyphicon-plus"></i>
+                    </button>
+                </div>
+                <div id="newFacility" class="modal fade" role="dialog">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                            </div>
+                            <div class="modal-body">
+                                <form asp-action="AddHotelFacility">
+                                    <input type="hidden" asp-for="@Model.Hotel.Name" name="HotelName" />
+                                    <div class="form-group">
+                                        <label asp-for="@newHotelFacility.Name" class="form-label"></label>
+                                        <input asp-for="@newHotelFacility.Name" name="Name" class="form-control" />
+                                    </div>
+                                    <div class="form-group">
+                                        <label asp-for="@newHotelFacility.Description" class="form-label"></label>
+                                        <input asp-for="@newHotelFacility.Description" name="Description" class="form-control" />
+                                    </div>
+                                    <input type="submit" value="Add Facility" class="btn btn-primary" />
+                                </form>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+    @if(Model.HotelRooms != null)
+    {
+        <div id="hotel-rooms">
+            <hr />
+            <div><h4>Hotel Rooms</h4></div>
+            <div>
+                <table class="table">
+                    @foreach (var room in Model.HotelRooms)
+                    {
+                        <tr>
+                            <td class="pt-4">@room.Type</td>
+                            <td class="pt-4">@room.Price</td>
+                            <td class="d-flex flex-row-reverse">
+                                <form asp-action="DeleteHotelRoom">
+                                    <input type="hidden" asp-for="@room.HotelName" name="HotelName" />
+                                    <input type="hidden" asp-for="@room.Type" name="Type" />
+                                    <input type="submit" value="Delete" class="btn btn-outline-danger" />
+                                </form>
+                            </td>
+                        </tr>
+                    }
+                </table>
+            </div>
+            <div>
+                <div class="d-flex  align-content-center">
+                    <button class="btn btn-outline-info" data-toggle="modal" data-target="#newRoom">
+                        New Room <i class="glyphicon glyphicon-plus"></i>
+                    </button>
+                </div>
+                <div id="newRoom" class="modal fade" role="dialog">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                            </div>
+                            <div class="modal-body">
+                                <form asp-action="AddHotelRoom">
+                                    <input type="hidden" asp-for="@Model.Hotel.Name" name="HotelName" />
+                                    <div class="form-group">
+                                        <label asp-for="@newHotelRoom.Type" class="form-label"></label>
+                                        <input asp-for="@newHotelRoom.Type" name="Type" class="form-control" />
+                                    </div>
+                                    <div class="form-group">
+                                        <label asp-for="@newHotelRoom.Price" class="form-label"></label>
+                                        <input type="number" step="any" asp-for="@newHotelRoom.Price" name="Price" class="form-control" />
+                                    </div>
+                                    <input type="submit" value="Add Room" class="btn btn-primary" />
+                                </form>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+    @if(Model.MuseumMonuments != null)
+    {
+        <div id="museum-mon">
+            <hr />
+            <div><h4>Museum Monuments</h4></div>
+            <div>
+                <table class="table">
+                    @foreach (var monument in Model.MuseumMonuments)
+                    {
+                        <tr>
+                            <td class="pt-4">@monument.Name</td>
+                            <td class="pt-4">@monument.Description</td>
+                            <td class="d-flex flex-row-reverse">
+                                <form asp-action="DeleteMuseumMonument">
+                                    <input type="hidden" asp-for="@monument.MuseumName" name="MuseumName" />
+                                    <input type="hidden" asp-for="@monument.Name" name="Name" />
+                                    <input type="submit" value="Delete" class="btn btn-outline-danger" />
+                                </form>
+                            </td>
+                        </tr>
+                    }
+                </table>
+            </div>
+            <div>
+                <div class="d-flex  align-content-center">
+                    <button class="btn btn-outline-info" data-toggle="modal" data-target="#newMonument">
+                        New Monument <i class="glyphicon glyphicon-plus"></i>
+                    </button>
+                </div>
+                <div id="newMonument" class="modal fade" role="dialog">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                            </div>
+                            <div class="modal-body">
+                                <form asp-action="AddMuseumMonument">
+                                    <input type="hidden" asp-for="@Model.Museum.Name" name="MuseumName" />
+                                    <div class="form-group">
+                                        <label asp-for="@newMuseumMonument.Name" class="form-label"></label>
+                                        <input asp-for="@newMuseumMonument.Name" name="Name" class="form-control" />
+                                    </div>
+                                    <div class="form-group">
+                                        <label asp-for="@newMuseumMonument.Description" class="form-label"></label>
+                                        <input asp-for="@newMuseumMonument.Description" name="Description" class="form-control" />
+                                    </div>
+                                    <input type="submit" value="Add Monument" class="btn btn-primary" />
+                                </form>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+    @if(Model.MuseumTickets != null)
+    {
+        <div id="museum-tickets">
+            <hr />
+            <div><h4>Museum Tickets</h4></div>
+            <div>
+                <table class="table">
+                    @foreach (var ticket in Model.MuseumTickets)
+                    {
+                        <tr>
+                            <td class="pt-4">@ticket.Type</td>
+                            <td class="pt-4">@ticket.Price</td>
+                            <td class="d-flex flex-row-reverse">
+                                <form asp-action="DeleteMuseumTicket">
+                                    <input type="hidden" asp-for="@ticket.MuseumName" name="MuseumName" />
+                                    <input type="hidden" asp-for="@ticket.Type" name="Type" />
+                                    <input type="submit" value="Delete" class="btn btn-outline-danger" />
+                                </form>
+                            </td>
+                        </tr>
+                    }
+                </table>
+            </div>
+            <div>
+                <div class="d-flex  align-content-center">
+                    <button class="btn btn-outline-info" data-toggle="modal" data-target="#newTicket">
+                        New Ticket <i class="glyphicon glyphicon-plus"></i>
+                    </button>
+                </div>
+                <div id="newTicket" class="modal fade" role="dialog">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                            </div>
+                            <div class="modal-body">
+                                <form asp-action="AddMuseumTicket">
+                                    <input type="hidden" asp-for="@Model.Museum.Name" name="MuseumName" />
+                                    <div class="form-group">
+                                        <label asp-for="@newMuseumTicket.Type" class="form-label"></label>
+                                        <input asp-for="@newMuseumTicket.Type" name="Type" class="form-control" />
+                                    </div>
+                                    <div class="form-group">
+                                        <label asp-for="@newMuseumTicket.Price" class="form-label"></label>
+                                        <input type="number" step="any" asp-for="@newMuseumTicket.Price" name="Price" class="form-control" />
+                                    </div>
+                                    <input type="submit" value="Add Ticket" class="btn btn-primary" />
+                                </form>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+    <div id="comments">
+        <hr />
+        <div><h4>Comments</h4></div>
+        <div>
+            <table class="table">
+                @foreach (var comment in Model.Comments)
+                {
+                    <tr>
+                        <td class="pt-4">@comment.Content</td>
+                        <td class="d-flex flex-row-reverse">
+                            <form asp-action="DeleteComment">
+                                <input type="hidden" asp-for="@comment.MemberEmail" name="MemberEmail" />
+                                <input type="hidden" asp-for="@comment.PlaceName" name="PlaceName" />
+                                <input type="hidden" asp-for="@comment.Content" name="Content" />
+                                <input type="submit" value="Delete" class="btn btn-outline-danger" />
+                            </form>
+                        </td>
+                    </tr>
+                }
+            </table>
+        </div>
+    </div>
+    <div id="hashtags">
+        <hr />
+        <div><h4>Hashtags</h4></div>
+        <div>
+            <table class="table">
+                @foreach (var hashtag in Model.Hashtags)
+                {
+                    <tr>
+                        <td class="pt-4">@hashtag.Content</td>
+                        <td class="d-flex flex-row-reverse">
+                            <form asp-action="DeleteHashtag">
+                                <input type="hidden" asp-for="@hashtag.MemberEmail" name="MemberEmail" />
+                                <input type="hidden" asp-for="@hashtag.PlaceName" name="PlaceName" />
+                                <input type="hidden" asp-for="@hashtag.Content" name="Content" />
+                                <input type="submit" value="Delete" class="btn btn-outline-danger" />
+                            </form>
+                        </td>
+                    </tr>
+                }
+            </table>
+        </div>
+    </div>
+    <div id="questions">
+        <hr />
+        <div><h4>Questions</h4></div>
+        <div>
+            <table class="table">
+                @foreach (var question in Model.Questions)
+                {
+                    <tr>
+                        <td class="pt-4">Q: @question.Content</td>
+                        <td class="d-flex flex-row-reverse">
+                            <form asp-action="DeleteQuestion">
+                                <input type="hidden" asp-for="@question.MemberEmail" name="MemberEmail" />
+                                <input type="hidden" asp-for="@question.PlaceName" name="PlaceName" />
+                                <input type="hidden" asp-for="@question.Content" name="Content" />
+                                <input type="submit" value="Delete" class="btn btn-outline-danger" />
+                            </form>
+                        </td>
+                    </tr>
+                    <tr>
+                        @if (string.IsNullOrEmpty(question.Answer))
+                        {
+                            <td>
+                                <form asp-action="AddQuestionAnswer" class="row">
+                                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                                    <input type="hidden" asp-for="@question.Content" name="Content" />
+                                    <div class="form-group">
+                                        <input asp-for="@question.Answer" class="form-control" name="Answer" />
+                                        <span asp-validation-for="@question.Answer" class="text-danger"></span>
+                                    </div>
+                                    <input type="hidden" asp-for="@question.MemberEmail" name="MemberEmail" />
+                                    <input type="hidden" asp-for="@question.PlaceName" name="PlaceName" />
+                                    <div class="form-group">
+                                        <input type="submit" value="Send Answer" class="btn btn-outline-primary col-md-3" />
+                                    </div>
+                                </form>
+                            </td>
+                        }
+                        else
+                        {
+                            <td>A: @question.Answer</td>
+                        }
+                    </tr>
+                }
+            </table>
+        </div>
+    </div>
+    <div id="rating-cri">
+        <hr />
+        <div><h4>Rating Criterias</h4></div>
+        <div>
+            <table class="table">
+                @foreach (var criteria in Model.RatingCriterias)
+                {
+                    <tr>
+                        <td class="pt-4">@criteria.Name</td>
+                        <td class="d-flex flex-row-reverse">
+                            <form asp-action="DeleteRatingCriteria">
+                                <input type="hidden" asp-for="@criteria.MemberEmail" name="MemberEmail" />
+                                <input type="hidden" asp-for="@criteria.PlaceName" name="PlaceName" />
+                                <input type="hidden" asp-for="@criteria.Name" name="Name" />
+                                <input type="submit" value="Delete" class="btn btn-outline-danger" />
+                            </form>
+                        </td>
+                    </tr>
+                }
+            </table>
+        </div>
+    </div>
+    <div id="photos">
+        <hr />
+        <div><h4>Photos</h4></div>
+        <div class="d-flex flex-wrap gap-2">
+            @foreach (var photo in Model.Photos)
+            {
+                <div class="d-flex flex-column">
+                    <div><img src="@Url.Content(photo.Photo)" width="200" height="200" /></div>
+                    <div>
+                        <form asp-action="DeletePhoto">
+                            <input type="hidden" asp-for="@photo.AdminEmail" name="AdminEmail" />
+                            <input type="hidden" asp-for="@photo.PlaceName" name="PlaceName" />
+                            <input type="hidden" asp-for="@photo.Photo" name="Photo" />
+                            <input type="submit" value="Delete" class="btn btn-outline-danger w-100" />
+                        </form>
+                    </div>
+                </div>
+            }
+        </div>
+        <div>
+            <div class="d-flex  align-content-center mt-3">
+                <button class="btn btn-outline-info" data-toggle="modal" data-target="#newPhoto">
+                    New Photo <i class="glyphicon glyphicon-plus"></i>
+                </button>
+            </div>
+            <div id="newPhoto" class="modal fade" role="dialog">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        </div>
+                        <div class="modal-body">
+                            <form asp-action="AddPhoto" enctype="multipart/form-data">
+                                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                                <input type="hidden" asp-for="@Model.Place.AdminEmail" name="AdminEmail" />
+                                <input type="hidden" asp-for="@Model.Place.Name" name="PlaceName" />
+                                <div class="form-group">
+                                    <label asp-for="@newPhoto.PhotoFile" class="form-label"></label>
+                                    <input type="file" asp-for="@newPhoto.PhotoFile" name="PhotoFile" class="form-control" />
+                                </div>
+                                <div class="form-group">
+                                    <input type="submit" value="Add Photo" class="btn btn-primary" />
+                                </div>
+                            </form>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

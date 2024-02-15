@@ -1,0 +1,71 @@
+﻿@model AdviseTheTourist.Models.Message
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+
+<div class="container">
+    <h1>Reply Message</h1>
+    <hr />
+    <div>
+        <dl class="row">
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.MemberEmail)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.MemberEmail)
+            </dd>
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.Member2Email)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.Member2Email)
+            </dd>
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.SentTime)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.SentTime)
+            </dd>
+        </dl>
+    </div>
+    <hr />
+    <div>
+        <dl class="row">
+            <dt class="col-sm-12">
+                @Html.DisplayNameFor(model => model.Content)
+            </dt>
+            <dd class="col-sm-12 mt-2">
+                @Html.DisplayFor(model => model.Content)
+            </dd>
+        </dl>
+    </div>
+    <hr />
+    <div class="col-4">
+        <form asp-action="EditConfirmed">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="Content" />
+            <div class="form-group">
+                <label asp-for="Reply" class="control-label"></label>
+                <textarea asp-for="Reply" class="form-control"></textarea>
+                <span asp-validation-for="Reply" class="text-danger"></span>
+            </div>
+            <input type="hidden" asp-for="MemberEmail" />
+            <input type="hidden" asp-for="Member2Email" />
+            <input type="hidden" asp-for="SentTime" />
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+        </form>
+        <div>
+            <a asp-action="Index">Back to List</a>
+        </div>
+    </div>
+</div>
+
+
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

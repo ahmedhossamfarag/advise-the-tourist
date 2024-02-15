@@ -1,0 +1,29 @@
+1200,800,True,0
+150,150,-16776961,-1
+120,60,-256,-65536,-8323073,-8388608
+120,100,-32704,-16777056,-8323073,-8388353
+9
+add place,True,False,773,319,5
+add hotel,True,False,753,151,0
+add meusum,True,False,867,159,0
+add restaurant,True,False,1055,256,0
+add city,True,False,1024,324,0
+add place info,True,False,962,213,0
+delete page,True,False,556,215,0
+remove criteria,True,False,420,268,0
+remove comment,True,False,362,384,0
+view mng places,False,True,351,485,0
+invitaion,True,False,457,556,0
+add ans,True,False,599,572,0
+view ques,False,True,762,545,0
+upload photo,True,False,851,438,0
+9
+Enter place info,1049,76,5,add hotel,True,False,add meusum,True,False,add city,True,False,add restaurant,True,False,add place info,True,False
+Upload photos,1024,576,1,upload photo,True,False
+View questions,849,688,1,view ques,True,True
+Answer questions,557,710,2,view ques,True,True,add ans,True,False
+Invite other,334,645,1,invitaion,True,False
+View managed places,178,480,1,view mng places,True,True
+Remove comment,160,261,1,remove comment,True,False
+Remove criteria,291,129,1,remove criteria,True,False
+Delete page,534,66,1,delete page,True,False
